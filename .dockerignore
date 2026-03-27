@@ -1,0 +1,10 @@
+node_modules
+dist
+__pycache__
+*.pyc
+.venv
+.env
+interview.db
+audio_answers
+.git
+.claude

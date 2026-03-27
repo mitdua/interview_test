@@ -1,0 +1,11 @@
+llm:
+  primary: gemini
+  fallback: groq
+
+tts:
+  primary: gemini
+  fallback: groq
+
+stt:
+  primary: groq
+  fallback: gemini
