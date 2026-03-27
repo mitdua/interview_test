@@ -1,103 +1,114 @@
 # InterView — AI Interview Practice
 
-Aplicacion web para practicar entrevistas de trabajo en ingles con IA. El sistema genera preguntas en audio, graba tus respuestas, las transcribe, evalua y da feedback con una puntuacion.
+![Python](https://img.shields.io/badge/Python-3.13+-3776AB?logo=python&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-18+-339933?logo=nodedotjs&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-003B57?logo=sqlite&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-yellow)
 
-## Requisitos
+A web application for practicing job interviews in English with AI. The system generates audio questions, records your answers, transcribes them, evaluates them, and provides feedback with a score.
+
+## Requirements
 
 - Python 3.13+
 - Node.js 18+
-- [uv](https://docs.astral.sh/uv/) (gestor de paquetes Python)
-- Docker y Docker Compose (opcional, para despliegue con contenedores)
+- [uv](https://docs.astral.sh/uv/) (Python package manager)
+- Docker and Docker Compose (optional, for containerized deployment)
 
-## API Keys (gratuitas)
+## API Keys (free tier)
 
-La app necesita dos claves de API. Ambas tienen plan gratuito:
+The app requires two API keys. Both offer a free tier:
 
-| Proveedor | Obtener clave |
-|-----------|---------------|
+| Provider | Get key |
+|----------|---------|
 | Google Gemini | https://aistudio.google.com/api-keys |
 | Groq | https://console.groq.com/keys |
 
-Configura las claves en un archivo `.env`:
+Set up the keys in a `.env` file:
 
 ```bash
 cp .env.example .env
-# Editar .env con tus claves
+# Edit .env with your keys
 ```
 
-## Instalacion
+## Installation
 
 ```bash
-# Clonar el repo
+# Clone the repo
 git clone <repo-url>
 cd agent-interview
 
-# Instalar dependencias Python
+# Install Python dependencies
 uv sync
 
-# Instalar dependencias Frontend
+# Install frontend dependencies
 cd src/frontend && npm install && cd ../..
 ```
 
-## Uso
+## Usage
 
-### Opcion 1 — Desarrollo local
+### Option 1 — Local development
 
 ```bash
-# Terminal 1 — Backend (puerto 8000)
+# Terminal 1 — Backend (port 8000)
 make backend
 
-# Terminal 2 — Frontend (puerto 5173)
+# Terminal 2 — Frontend (port 5173)
 make frontend
 ```
 
-Abre http://localhost:5173 en tu navegador.
+Open http://localhost:5173 in your browser.
 
-### Opcion 2 — Docker Compose
+### Option 2 — Docker Compose
 
-Levanta todo con un solo comando:
+Spin everything up with a single command:
 
 ```bash
 make docker
 ```
 
-Abre http://localhost en tu navegador.
+Open http://localhost in your browser.
 
-Para detener los contenedores:
+To stop the containers:
 
 ```bash
 make docker-down
 ```
 
-### Comandos disponibles
+### Available commands
 
-| Comando | Descripcion |
+| Command | Description |
 |---------|-------------|
-| `make backend` | Inicia el backend con hot-reload (puerto 8000) |
-| `make frontend` | Inicia el frontend dev server (puerto 5173) |
-| `make docker` | Build + levanta todo con Docker Compose |
-| `make docker-down` | Detiene los contenedores |
+| `make backend` | Start the backend with hot-reload (port 8000) |
+| `make frontend` | Start the frontend dev server (port 5173) |
+| `make docker` | Build and start everything with Docker Compose |
+| `make docker-down` | Stop the containers |
 
-## Como funciona
+## How it works
 
-1. **Setup** — Escribe el contexto de la entrevista (puesto, empresa, tecnologias), elige el numero de preguntas y si quieres preguntas de seguimiento.
-2. **Entrevista** — La IA genera una pregunta y la lee en audio. Escuchas la pregunta, grabas tu respuesta con el microfono, y la envias.
-3. **Resultado** — Recibes una puntuacion (1-10), la transcripcion de tu respuesta, feedback detallado y una respuesta mejorada como ejemplo.
-4. **Resumen** — Al terminar, ves tu puntuacion promedio, feedback general y el detalle de cada pregunta.
+1. **Setup** — Enter the interview context (position, company, technologies), choose the number of questions, and whether you want follow-up questions.
+2. **Interview** — The AI generates a question and reads it aloud. You listen to the question, record your answer with the microphone, and submit it.
+3. **Result** — You receive a score (1–10), the transcription of your answer, detailed feedback, and an improved sample answer.
+4. **Summary** — When finished, you see your average score, overall feedback, and the details for each question.
 
-## Proveedores de IA
+## AI Providers
 
-La app usa un patron de failover configurable en `config.yml`:
+The app uses a configurable failover pattern defined in `config.yml`:
 
-| Modulo | Primario | Fallback |
-|--------|----------|----------|
-| LLM    | Gemini   | Groq     |
-| TTS    | Gemini   | Groq     |
-| STT    | Groq     | Gemini   |
+| Module | Primary | Fallback |
+|--------|---------|----------|
+| LLM    | Gemini  | Groq     |
+| TTS    | Gemini  | Groq     |
+| STT    | Groq    | Gemini   |
 
-Si el proveedor primario falla, se usa automaticamente el fallback.
+If the primary provider fails, the fallback is used automatically.
 
-## Stack
+## Tech Stack
 
 - **Backend:** FastAPI + SQLAlchemy (async) + SQLite
 - **Frontend:** React 19 + TypeScript + Tailwind CSS 4 + Vite
@@ -106,45 +117,45 @@ Si el proveedor primario falla, se usa automaticamente el fallback.
 - **STT:** Groq (`whisper-large-v3-turbo`), Gemini (via `gemini-3-flash-preview`)
 - **Infra:** Docker + Nginx (reverse proxy)
 
-## Estructura del proyecto
+## Project Structure
 
 ```
-├── main.py                  # Entry point (lanza uvicorn)
-├── config.yml               # Prioridades de proveedores
-├── Makefile                 # Comandos de desarrollo y Docker
-├── docker-compose.yml       # Orquestacion de contenedores
+├── main.py                  # Entry point (launches uvicorn)
+├── config.yml               # Provider priorities
+├── Makefile                 # Development and Docker commands
+├── docker-compose.yml       # Container orchestration
 ├── docker/
-│   ├── backend.Dockerfile   # Imagen del backend (Python + uv)
-│   ├── frontend.Dockerfile  # Imagen del frontend (build + nginx)
-│   └── nginx.conf           # Proxy reverso /api → backend
+│   ├── backend.Dockerfile   # Backend image (Python + uv)
+│   ├── frontend.Dockerfile  # Frontend image (build + nginx)
+│   └── nginx.conf           # Reverse proxy /api → backend
 ├── src/
 │   ├── backend/
 │   │   ├── main.py          # FastAPI app
-│   │   ├── core/            # Config, DB, dependencias
-│   │   ├── models/          # Modelos SQLAlchemy
-│   │   ├── api/             # Rutas y schemas
-│   │   ├── modules/         # LLM, TTS, STT (patron Provider)
-│   │   └── services/        # Logica de negocio
+│   │   ├── core/            # Config, DB, dependencies
+│   │   ├── models/          # SQLAlchemy models
+│   │   ├── api/             # Routes and schemas
+│   │   ├── modules/         # LLM, TTS, STT (Provider pattern)
+│   │   └── services/        # Business logic
 │   └── frontend/
 │       └── src/
 │           ├── pages/       # Setup, Interview, Summary, History
 │           ├── components/  # AudioPlayer, ResultCard, Spinner
 │           ├── hooks/       # useAudioRecorder
 │           └── services/    # API client
-├── audio_answers/           # Respuestas grabadas (auto-creado)
-└── interview.db             # SQLite (auto-creado)
+├── audio_answers/           # Recorded answers (auto-created)
+└── interview.db             # SQLite (auto-created)
 ```
 
 ## API
 
-Todos los endpoints bajo `/api`:
+All endpoints under `/api`:
 
-| Metodo | Ruta | Descripcion |
-|--------|------|-------------|
-| `POST` | `/sessions` | Crear sesion de entrevista |
-| `GET` | `/sessions` | Listar sesiones |
-| `GET` | `/sessions/{id}` | Detalle de sesion |
-| `GET` | `/sessions/{id}/next-question` | Siguiente pregunta (con audio) |
-| `POST` | `/sessions/{id}/questions/{qid}/answer` | Enviar respuesta (multipart audio) |
-| `GET` | `/sessions/{id}/summary` | Resumen final |
+| Method | Route | Description |
+|--------|-------|-------------|
+| `POST` | `/sessions` | Create an interview session |
+| `GET` | `/sessions` | List sessions |
+| `GET` | `/sessions/{id}` | Session details |
+| `GET` | `/sessions/{id}/next-question` | Next question (with audio) |
+| `POST` | `/sessions/{id}/questions/{qid}/answer` | Submit answer (multipart audio) |
+| `GET` | `/sessions/{id}/summary` | Final summary |
 | `GET` | `/health` | Health check |
