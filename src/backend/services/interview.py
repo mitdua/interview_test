@@ -22,6 +22,7 @@ async def create_session(
     context: str,
     num_questions: int,
     follow_up_mode: bool,
+    english_level: str = "B1",
 ) -> Session:
     if not context.strip():
         raise HTTPException(status_code=400, detail="Context cannot be empty")
@@ -32,6 +33,7 @@ async def create_session(
         context=context,
         num_questions=num_questions,
         follow_up_mode=follow_up_mode,
+        english_level=english_level,
     )
     db.add(session)
     await db.commit()
@@ -108,6 +110,7 @@ async def get_next_question(db: AsyncSession, session_id: str) -> dict:
             position=position,
             previous_qa=previous_qa,
             is_follow_up=is_follow_up,
+            english_level=session.english_level,
         )
     except Exception:
         raise HTTPException(status_code=503, detail="Failed to generate question. Please try again.")
@@ -193,6 +196,7 @@ async def submit_answer(
             context=session.context,
             question_text=question.question_text,
             transcription=transcription,
+            english_level=session.english_level,
         )
     except Exception:
         raise HTTPException(status_code=503, detail="Failed to evaluate answer. Please try again.")
@@ -258,6 +262,7 @@ async def get_summary(db: AsyncSession, session_id: str) -> dict:
                 "generate_summary",
                 context=session.context,
                 questions_and_scores=questions_data,
+                english_level=session.english_level,
             )
             session.average_score = summary.average_score
             session.general_feedback = summary.general_feedback

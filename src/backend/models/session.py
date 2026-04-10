@@ -14,6 +14,7 @@ class Session(Base):
     context: Mapped[str] = mapped_column(Text, default="")
     num_questions: Mapped[int] = mapped_column(Integer, default=5)
     follow_up_mode: Mapped[bool] = mapped_column(Boolean, default=False)
+    english_level: Mapped[str] = mapped_column(Text, default="B1")
     average_score: Mapped[float | None] = mapped_column(Float, nullable=True)
     general_feedback: Mapped[str | None] = mapped_column(Text, nullable=True)
     status: Mapped[str] = mapped_column(Text, default="in_progress")

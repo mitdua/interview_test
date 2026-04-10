@@ -21,11 +21,13 @@ async def create_session(body: SessionCreate, db: AsyncSession = Depends(get_db)
         context=body.context,
         num_questions=body.num_questions,
         follow_up_mode=body.follow_up_mode,
+        english_level=body.english_level,
     )
     return SessionResponse(
         session_id=session.id,
         status=session.status,
         num_questions=session.num_questions,
+        english_level=session.english_level,
     )
 
 
@@ -37,6 +39,7 @@ async def list_sessions(db: AsyncSession = Depends(get_db)):
             session_id=s.id,
             context_preview=s.context[:100] if s.context else "",
             num_questions=s.num_questions,
+            english_level=s.english_level,
             average_score=s.average_score,
             status=s.status,
             created_at=s.created_at,
@@ -55,6 +58,7 @@ async def get_session(session_id: str, db: AsyncSession = Depends(get_db)):
         context=session.context,
         num_questions=session.num_questions,
         follow_up_mode=session.follow_up_mode,
+        english_level=session.english_level,
         status=session.status,
         average_score=session.average_score,
         created_at=session.created_at,

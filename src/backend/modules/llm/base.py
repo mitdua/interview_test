@@ -29,6 +29,7 @@ class BaseLLM(ABC):
         position: int,
         previous_qa: list[dict],
         is_follow_up: bool,
+        english_level: str = "B1",
     ) -> GeneratedQuestion:
         """Generate an interview question based on context and history."""
 
@@ -38,6 +39,7 @@ class BaseLLM(ABC):
         context: str,
         question_text: str,
         transcription: str,
+        english_level: str = "B1",
     ) -> Evaluation:
         """Evaluate a candidate's answer and provide feedback."""
 
@@ -46,5 +48,6 @@ class BaseLLM(ABC):
         self,
         context: str,
         questions_and_scores: list[dict],
+        english_level: str = "B1",
     ) -> SessionSummary:
         """Generate a summary for the entire interview session."""

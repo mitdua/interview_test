@@ -13,6 +13,7 @@ from src.backend.modules.llm.prompts import (
     SYSTEM_EVALUATOR,
     SYSTEM_INTERVIEWER,
     SYSTEM_SUMMARY,
+    get_question_level,
 )
 
 QUESTION_SCHEMA = types.Schema(
@@ -46,10 +47,13 @@ class GeminiLLM(BaseLLM):
         position: int,
         previous_qa: list[dict],
         is_follow_up: bool,
+        english_level: str = "B1",
     ) -> GeneratedQuestion:
         user_prompt = QUESTION_GENERATION_USER.format(
             context=context,
             position=position,
+            english_level=english_level,
+            question_level=get_question_level(english_level),
             follow_up_instruction=FOLLOW_UP_INSTRUCTION if is_follow_up else NO_FOLLOW_UP_INSTRUCTION,
             previous_qa=self._format_qa(previous_qa),
         )
@@ -73,11 +77,13 @@ class GeminiLLM(BaseLLM):
         context: str,
         question_text: str,
         transcription: str,
+        english_level: str = "B1",
     ) -> Evaluation:
         user_prompt = ANSWER_EVALUATION_USER.format(
             context=context,
             question_text=question_text,
             transcription=transcription,
+            english_level=english_level,
         )
         response = await self.client.aio.models.generate_content(
             model=self.model,
@@ -99,10 +105,12 @@ class GeminiLLM(BaseLLM):
         self,
         context: str,
         questions_and_scores: list[dict],
+        english_level: str = "B1",
     ) -> SessionSummary:
         user_prompt = SESSION_SUMMARY_USER.format(
             context=context,
             questions_and_scores=json.dumps(questions_and_scores, indent=2),
+            english_level=english_level,
         )
         response = await self.client.aio.models.generate_content(
             model=self.model,

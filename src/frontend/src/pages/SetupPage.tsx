@@ -1,10 +1,21 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../services/api'
+import type { EnglishLevel } from '../types'
+
+const ENGLISH_LEVELS: { value: EnglishLevel; label: string }[] = [
+  { value: 'A1', label: 'A1 - Beginner' },
+  { value: 'A2', label: 'A2 - Elementary' },
+  { value: 'B1', label: 'B1 - Intermediate' },
+  { value: 'B2', label: 'B2 - Upper Intermediate' },
+  { value: 'C1', label: 'C1 - Advanced' },
+  { value: 'C2', label: 'C2 - Proficient' },
+]
 
 export default function SetupPage() {
   const navigate = useNavigate()
   const [context, setContext] = useState('')
+  const [englishLevel, setEnglishLevel] = useState<EnglishLevel>('B1')
   const [numQuestions, setNumQuestions] = useState(5)
   const [followUpMode, setFollowUpMode] = useState(true)
   const [loading, setLoading] = useState(false)
@@ -19,6 +30,7 @@ export default function SetupPage() {
         context,
         num_questions: numQuestions,
         follow_up_mode: followUpMode,
+        english_level: englishLevel,
       })
       navigate(`/interview/${session.session_id}`)
     } catch (err) {
@@ -53,6 +65,23 @@ export default function SetupPage() {
             placeholder="Paste the job description or describe the role you're preparing for..."
             className="w-full rounded-lg border border-gray-700/80 bg-gray-800/50 px-4 py-3 text-gray-100 placeholder-gray-500 transition-colors focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500/60"
           />
+        </div>
+
+        <div>
+          <label className="mb-2 block text-sm font-medium text-gray-300">
+            English Level (CEFR)
+          </label>
+          <select
+            value={englishLevel}
+            onChange={(e) => setEnglishLevel(e.target.value as EnglishLevel)}
+            className="w-full rounded-lg border border-gray-700/80 bg-gray-800/50 px-4 py-3 text-gray-100 transition-colors focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500/60"
+          >
+            {ENGLISH_LEVELS.map((level) => (
+              <option key={level.value} value={level.value}>
+                {level.label}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="flex gap-6">
